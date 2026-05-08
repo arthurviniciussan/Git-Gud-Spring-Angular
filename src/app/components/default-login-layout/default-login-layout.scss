@@ -72,6 +72,10 @@ main {
             font-weight: bold;
             cursor: pointer;
             transition: background 0.2s, transform 0.2s;
+
+            &:disabled {
+                opacity: 0.8;
+            }
         }
 
         .primaryBtn {
