@@ -1,18 +1,26 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <main>
-  <section>
+  <section class="form-section">
 
     <img [src]="logoImage" alt="Logo"/>
-    <h2></h2>
+    <h2>{{ title }}</h2>
+    <ng-content></ng-content>
 
-    <button></button>
-    <div>
+    <button class="primaryBtn">{{ primaryBtnText }}</button>
+    <div class="or-div">
+      <div class="simple-line"></div>
       <span>or</span>
+      <div class="simple-line"></div>
     </div>
-    <button></button>
+    <button class="secundaryBtn">{{ secundaryBtnText }}</button>
 
   </section>
-  <section>
-    <h1>Git gud, Bruh!</h1>
-    <img [src]="bonfireImage" alt="Bonfire"/>
+  <section class="main-section">
+    <div class="main-div">
+    <h1>Git Gud, Bruh!</h1>
+    <img class="bonfire-image" [src]="bonfireImage" alt="Bonfire"/>
+    </div>
   </section>
 </main>

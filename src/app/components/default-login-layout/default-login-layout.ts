@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-default-login-layout',
@@ -9,4 +9,8 @@ import { Component } from '@angular/core';
 export class DefaultLoginLayout {
   logoImage = 'assets/log-Git-Gud!.png';
   bonfireImage = '/assets/main-image-bonfire-removebg-preview.png';
+
+  @Input() title: string = "";
+  @Input() primaryBtnText: string = "";
+  @Input() secundaryBtnText: string = "";
 }
