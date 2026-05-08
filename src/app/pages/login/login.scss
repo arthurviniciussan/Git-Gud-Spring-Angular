@@ -1,6 +1,18 @@
+@use "../../../styles/variables.scss" as v;
+
 form {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    margin-bottom: 34px;
+
+}
+
+span {
+    font-size: 14px;
+    text-decoration: underline;
+    color: v.$secundary-color;
+    text-align: end;
+    font-family: "Noto Serif", serif;
 }
