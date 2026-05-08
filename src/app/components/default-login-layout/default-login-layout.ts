@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 })
 export class DefaultLoginLayout {
   logoImage = 'assets/log-Git-Gud!.png';
-  bonfireImage = '/assets/main-image-bonfire-removebg-preview.png';
+  bonfireImage = '/assets/main-bonfire-image-removebg.png';
 
   @Input() title: string = "";
   @Input() primaryBtnText: string = "";
