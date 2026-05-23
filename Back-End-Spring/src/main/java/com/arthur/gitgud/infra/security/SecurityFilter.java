@@ -3,7 +3,6 @@ package com.arthur.gitgud.infra.security;
 import java.io.IOException;
 import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,8 +25,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private final UserRepository userRepository;
 
-
-    @Autowired
     public SecurityFilter(TokenService tokenService, UserRepository userRepository) {
         this.tokenService = tokenService;
         this.userRepository = userRepository;

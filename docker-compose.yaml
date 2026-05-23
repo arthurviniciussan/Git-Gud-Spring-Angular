@@ -1,0 +1,43 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=gitgud_db
+      - MYSQL_USER=arthur
+      - MYSQL_PASSWORD=senha_secreta_123
+      - MYSQL_ROOT_PASSWORD=root_secreta_123
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    build: ./Back-End-Spring  # <--- Aponta para a pasta do Spring
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/gitgud_db?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=arthur
+      - SPRING_DATASOURCE_PASSWORD=senha_secreta_123
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - API_SECURITY_TOKEN_JWT_SECRET=mysecretkey
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./Front-End-Angular # <--- Aponta para a pasta do Angular
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./Front-End-Angular:/app       # Espelha seu código para o Hot Reload funcionar
+      - /app/node_modules              # Evita que o Docker sobrescreva a pasta node_modules local
+    depends_on:
+      - app                            # Garante que o Angular suba depois do Back-End
+volumes:
+  db_data:
