@@ -42,8 +42,8 @@ export class Signup {
   }
 
   submit() {
-    this.loginService.login(this.signupForm.value.email, this.signupForm.value.password).subscribe({
-      next: () => this.toastr.success("Success Login"),
+    this.loginService.signup(this.signupForm.value.name, this.signupForm.value.email, this.signupForm.value.password).subscribe({
+      next: () => this.toastr.success("Success Signup"),
       error: () => this.toastr.error("Something is wrong, try again later...")
     });
   }

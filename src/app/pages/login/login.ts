@@ -37,6 +37,7 @@ export class Login {
       next: () => this.toastr.success("Success Login"),
       error: () => this.toastr.error("Something is wrong, try again later...")
     });
+    this.router.navigate(["/user"]);
   }
 
   navigate() {
