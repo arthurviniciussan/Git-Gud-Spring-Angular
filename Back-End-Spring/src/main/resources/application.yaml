@@ -3,18 +3,61 @@ spring:
     name: gitgud
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:testdb}
-    username: ${SPRING_DATASOURCE_USERNAME:sa}
-    password: ${SPRING_DATASOURCE_PASSWORD:}
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.h2.Driver}
-  
-  jpa:
-    hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
-    show-sql: true
+    # O default aponta para o MySQL que o docker-compose sobe. Em producao
+    # DATABASE_URL e sempre definida e o default nunca chega a ser usado.
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/gitgud_db?useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${DATABASE_USER:gitgud}
+    password: ${DATABASE_PASSWORD:gitgud}
 
-api:
-  security:
-    token:
-      jwt:
-        secret: ${API_SECURITY_TOKEN_JWT_SECRET:mysecretkey}
+  jpa:
+    # O schema pertence ao Flyway. O Hibernate apenas confere se as entidades
+    # batem com o que as migrations criaram — nunca altera o banco.
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    # Banco que ja existia (criado pelo antigo ddl-auto: update) entra como
+    # baseline em vez de falhar.
+    baseline-on-migrate: true
+
+gitgud:
+  admin:
+    # O unico usuario do sistema. Sem default em lugar nenhum: sem estas tres
+    # variaveis a aplicacao nao sobe. Gere o hash com:
+    #   docker run --rm httpd:2.4-alpine htpasswd -nbBC 12 admin 'SUA_SENHA' | cut -d: -f2
+    email: ${GITGUD_ADMIN_EMAIL:}
+    name: ${GITGUD_ADMIN_NAME:}
+    password-hash: ${GITGUD_ADMIN_PASSWORD_HASH:}
+
+  jwt:
+    # HS256 exige no minimo 256 bits de segredo. Gere com:
+    #   openssl rand -base64 48
+    secret: ${GITGUD_JWT_SECRET:}
+    issuer: gitgud-api
+    expiration: ${GITGUD_JWT_EXPIRATION:2h}
+
+  cors:
+    # Origens do frontend, separadas por virgula.
+    allowed-origins: ${GITGUD_CORS_ORIGINS:http://localhost:4200}
+
+  login:
+    # Defesa contra forca bruta na senha do admin.
+    max-attempts: ${GITGUD_LOGIN_MAX_ATTEMPTS:5}
+    lock-duration: ${GITGUD_LOGIN_LOCK_DURATION:15m}
+
+server:
+  port: ${SERVER_PORT:8080}
+  # Faz o Spring respeitar X-Forwarded-For, para o limite de tentativas enxergar
+  # o IP real quando houver proxy na frente (producao).
+  forward-headers-strategy: framework
+
+logging:
+  level:
+    com.arthur.gitgud: ${LOG_LEVEL:INFO}

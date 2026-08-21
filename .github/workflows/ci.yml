@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  backend:
+    name: Backend (Java 21)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: temurin
+          cache: maven
+
+      # Os testes de integracao sobem um MySQL via Testcontainers; o runner do
+      # GitHub ja tem Docker disponivel.
+      - name: mvn verify
+        working-directory: Back-End-Spring
+        run: ./mvnw -B verify
+
+  frontend:
+    name: Frontend (Node 22)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: Front-End-Angular/package-lock.json
+
+      - name: npm ci
+        working-directory: Front-End-Angular
+        run: npm ci
+
+      - name: Testes
+        working-directory: Front-End-Angular
+        run: npm test
+
+      - name: Build de producao
+        working-directory: Front-End-Angular
+        run: npm run build

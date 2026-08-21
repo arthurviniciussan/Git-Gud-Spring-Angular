@@ -1,46 +1,69 @@
-import { Component } from '@angular/core';
-import { DefaultLoginLayout } from '../../components/default-login-layout/default-login-layout';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PrimaryInput } from '../../components/primary-input/primary-input';
 import { Router } from '@angular/router';
-import { LoginService } from '../../services/login.services';
-
 import { ToastrService } from 'ngx-toastr';
+import { DefaultLoginLayout } from '../../components/default-login-layout/default-login-layout';
+import { PrimaryInput } from '../../components/primary-input/primary-input';
+import { AuthService } from '../../services/auth.service';
+import { ErroDaApi } from '../../types/auth.type';
 
 @Component({
   selector: 'app-login',
-  imports: [
-    DefaultLoginLayout, ReactiveFormsModule, PrimaryInput
-  ],
-  providers: [
-    LoginService
-  ],
+  imports: [DefaultLoginLayout, ReactiveFormsModule, PrimaryInput],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
-  loginForm!: FormGroup;
+  private readonly router = inject(Router);
+  private readonly auth = inject(AuthService);
+  private readonly toastr = inject(ToastrService);
 
-  constructor( 
-    private router: Router,
-    private loginService: LoginService,
-    private toastr: ToastrService
-  ) {
-    this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)])
+  readonly enviando = signal(false);
+  readonly erro = signal<string | null>(null);
+
+  readonly loginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+  });
+
+  submit(): void {
+    if (this.loginForm.invalid || this.enviando()) {
+      return;
+    }
+
+    this.enviando.set(true);
+    this.erro.set(null);
+
+    const { email, password } = this.loginForm.getRawValue();
+
+    this.auth.login(email ?? '', password ?? '').subscribe({
+      next: () => {
+        this.enviando.set(false);
+        this.toastr.success('Bem-vindo de volta.');
+        // A navegacao ficava FORA do subscribe: entrava no painel mesmo com a
+        // senha errada. Agora so acontece quando a API confirma o login.
+        void this.router.navigate(['/admin']);
+      },
+      error: (falha: HttpErrorResponse) => {
+        this.enviando.set(false);
+        const mensagem = this.mensagemDe(falha);
+        this.erro.set(mensagem);
+        this.toastr.error(mensagem);
+      },
     });
   }
 
-  submit() {
-    this.loginService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe({
-      next: () => this.toastr.success("Success Login"),
-      error: () => this.toastr.error("Something is wrong, try again later...")
-    });
-    this.router.navigate(["/user"]);
-  }
+  /** Usa a mensagem da API — inclusive a de "tentativas demais", que o usuario precisa ver. */
+  private mensagemDe(falha: HttpErrorResponse): string {
+    const corpo = falha.error as ErroDaApi | null;
 
-  navigate() {
-    this.router.navigate(["/signup"])
+    if (corpo?.message) {
+      return corpo.message;
+    }
+    if (falha.status === 0) {
+      return 'Não foi possível falar com o servidor.';
+    }
+    return 'Não foi possível entrar. Tente novamente.';
   }
 }

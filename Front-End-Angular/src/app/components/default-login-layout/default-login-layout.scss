@@ -85,15 +85,15 @@ main {
             font-family: "Noto Serif", serif;
         }
 
-        .secundaryBtn {
+        .secondaryBtn {
             background-color: #fff;
-            color: v.$secundary-color;
+            color: v.$secondary-color;
             border: 1px solid v.$primary-color;
             font-family: "Noto Serif", serif;
         }
 
         button:hover {
-            background: v.$secundary-color;
+            background: v.$secondary-color;
             color: #fff;
             transform: translateY(-2px) scale(1.03);
         }
