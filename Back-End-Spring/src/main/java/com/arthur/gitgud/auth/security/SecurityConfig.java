@@ -60,6 +60,11 @@ public class SecurityConfig {
                 .sessionManagement(sessao -> sessao.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(rotas -> rotas
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        // O blog em si. Ler nao exige conta — e o ponto do produto.
+                        // Restrito a GET de proposito: sem o metodo, um POST em
+                        // /api/articles tambem passaria pelo permitAll.
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/articles", "/api/articles/**", "/api/tags").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling(erros -> erros

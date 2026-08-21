@@ -68,7 +68,7 @@ a variável de ambiente e reiniciar.
 |---|---|---|
 | `POST` | `/api/auth/login` | público → `{name, email, role, token}` |
 | `GET` | `/api/auth/session` | token válido → quem está logado |
-| — | `/api/admin/**` | `ROLE_ADMIN` (reservado para os artigos) |
+| — | `/api/admin/**` | `ROLE_ADMIN` |
 
 O token vai no header `Authorization: Bearer <token>` e vale 2 horas.
 
@@ -86,6 +86,62 @@ Todos no mesmo formato, em qualquer status:
 
 ---
 
+## Artigos
+
+**Ler não exige conta.** As rotas abaixo são abertas — é o ponto do produto.
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/api/articles?page=0&size=10` | Publicados, do mais recente. Sem o corpo do texto |
+| `GET` | `/api/articles?tag=rpg` | Filtra por tag |
+| `GET` | `/api/articles/{slug}` | Artigo completo, com `contentHtml` |
+| `GET` | `/api/tags` | Todas as tags |
+
+Escrever exige `ROLE_ADMIN`:
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/api/admin/articles` | Lista tudo, rascunho incluso |
+| `POST` | `/api/admin/articles` | Cria. Responde `201` com `Location` |
+| `PUT` | `/api/admin/articles/{id}` | Edita |
+| `PATCH` | `/api/admin/articles/{id}/publish` | Publica |
+| `PATCH` | `/api/admin/articles/{id}/unpublish` | Tira do ar |
+| `DELETE` | `/api/admin/articles/{id}` | Apaga. `204` |
+| `POST` | `/api/admin/articles/preview` | Markdown → HTML, para o preview do editor |
+
+Corpo de criação — só `title`, `summary` e `contentMarkdown` são obrigatórios:
+
+```json
+{
+  "title": "Elden Ring é difícil",
+  "summary": "E tudo bem que seja.",
+  "contentMarkdown": "# Elden Ring\n\nTexto em **markdown**.",
+  "coverImageUrl": "/uploads/2026/08/capa.webp",
+  "game": "Elden Ring",
+  "score": 9.5,
+  "tags": ["RPG", "Souls-like"]
+}
+```
+
+**O Markdown vira HTML no servidor.** O artigo é gravado em Markdown, e a API
+devolve `contentHtml` já convertido e sanitizado (commonmark + jsoup). Isso
+mantém uma sanitização única: o frontend só injeta o HTML, e a renderização no
+servidor da Etapa 5 não precisa repetir a limpeza em JavaScript.
+
+**O slug não segue o título.** Ele nasce dele (`Elden Ring é difícil` →
+`elden-ring-e-dificil`), mas editar o título não muda o endereço — link
+publicado é link que precisa continuar funcionando. Títulos repetidos ganham
+sufixo (`-2`, `-3`).
+
+**Rascunho é invisível**, inclusive pelo slug direto: responde `404`, não `403`.
+Um `403` confirmaria que o artigo existe.
+
+**A data de publicação é carimbada uma vez.** Despublicar não a apaga e
+republicar não a renova — do contrário, corrigir uma vírgula faria um artigo
+antigo reaparecer como novidade na home e no sitemap.
+
+---
+
 ## Estrutura
 
 O backend é organizado **por módulo** e, dentro de cada módulo, **por camada**.
@@ -100,6 +156,12 @@ Back-End-Spring/src/main/java/com/arthur/gitgud/
   user/
     domain/      User, Role
     repository/
+  article/
+    controller/  rotas públicas e as do painel
+    service/     ArticleService, MarkdownRenderer
+    repository/
+    domain/      Article, ArticleStatus, Slug, Tag
+    dto/
   auth/
     controller/  entrada HTTP
     service/     TokenService
