@@ -1,5 +1,10 @@
+// Paleta do GitGud. O dourado vem da identidade da tela de login.
+//
+// Nota para a etapa de tema claro/escuro: $primary-color funciona muito bem como
+// TEXTO sobre fundo escuro, mas mal como preenchimento com texto claro por cima.
+// Botao dourado pede texto escuro, nao branco.
 $primary-color: #e7c75b;
+$secondary-color: #bda34f;
 $text-color: #555555;
-$secundary-color: #bda34f;
-$grey-bg: #EEEEEE;
-$secudary-grey-bg: #bdbdbd;
+$grey-bg: #eeeeee;
+$secondary-grey-bg: #bdbdbd;

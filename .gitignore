@@ -1,1 +1,21 @@
-node_modules
+# --- Java / Maven ---
+target/
+*.jar
+!.mvn/wrapper/*.jar
+
+# --- Node / Angular ---
+node_modules/
+.angular/
+dist/
+*.tsbuildinfo
+
+# --- Ambiente: segredos nunca entram no repositorio ---
+.env
+.env.local
+*.log
+
+# --- IDE / SO ---
+.idea/
+*.iml
+.DS_Store
+Thumbs.db

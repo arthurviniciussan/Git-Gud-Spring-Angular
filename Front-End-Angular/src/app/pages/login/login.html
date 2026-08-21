@@ -1,31 +1,34 @@
-<app-default-login-layout 
-title="Login into your account" 
-primaryBtnText="login" 
-secundaryBtnText="sign up now"
-(submit)="submit()"
-(navigate)="navigate()"
-[disablePrimaryBtn]="!loginForm.valid"
+<app-default-login-layout
+  title="Entrar no painel"
+  primaryBtnText="entrar"
+  (submit)="submit()"
+  [disablePrimaryBtn]="!loginForm.valid || enviando()"
 >
+  <form [formGroup]="loginForm">
+    <app-primary-input
+      formControlName="email"
+      inputName="email"
+      type="email"
+      label="Email"
+      placeholder="voce@exemplo.com"
+    >
+      <img src="/assets/email-icon.png" alt="" />
+    </app-primary-input>
 
-<form [formGroup]="loginForm">
+    <div style="height: 18px"></div>
+
     <app-primary-input
-    formControlName="email"
-        inputName="email"
-        type="email"
-        label="Email"
-        placeholder="johndoe@email.com">
-        <img src="/assets/email-icon.png" alt="Email icon">
+      formControlName="password"
+      inputName="password"
+      type="password"
+      label="Senha"
+      placeholder="Sua senha"
+    >
+      <img src="/assets/password-icon.png" alt="" />
     </app-primary-input>
-    <div style="height: 18px;"></div>
-    <app-primary-input
-    formControlName="password"
-        inputName="password"
-        type="password"
-        label="Your Password"
-        placeholder="Your Password">
-        <img src="/assets/password-icon.png" alt="Password icon">
-    </app-primary-input>
-    <span>Forgot password?</span>
-</form>
-     
+
+    @if (erro(); as mensagem) {
+      <p class="erro" role="alert">{{ mensagem }}</p>
+    }
+  </form>
 </app-default-login-layout>

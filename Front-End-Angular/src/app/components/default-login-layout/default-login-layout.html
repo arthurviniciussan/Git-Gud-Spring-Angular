@@ -1,28 +1,27 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <main>
   <section class="form-section">
-
-    <img [src]="logoImage" alt="Logo"/>
+    <img [src]="logoImage" alt="Logo do GitGud" />
     <h2>{{ title }}</h2>
     <ng-content></ng-content>
 
-    <button class="primaryBtn" 
-    (click)="submit()"
-    [disabled]="disablePrimaryBtn">{{ primaryBtnText }}</button>
-    <div class="or-div">
-      <div class="simple-line"></div>
-      <span>or</span>
-      <div class="simple-line"></div>
-    </div>
-    <button class="secundaryBtn" (click)="navigate()">{{ secundaryBtnText }}</button>
+    <button class="primaryBtn" (click)="submit()" [disabled]="disablePrimaryBtn">
+      {{ primaryBtnText }}
+    </button>
 
+    @if (secondaryBtnText) {
+      <div class="or-div">
+        <div class="simple-line"></div>
+        <span>or</span>
+        <div class="simple-line"></div>
+      </div>
+      <button class="secondaryBtn" (click)="navigate()">{{ secondaryBtnText }}</button>
+    }
   </section>
+
   <section class="main-section">
     <div class="main-div">
-    <h1>Git Gud, Bruh!</h1>
-    <img class="bonfire-image" [src]="bonfireImage" alt="Bonfire"/>
+      <h1>Git Gud, Bruh!</h1>
+      <img class="bonfire-image" [src]="bonfireImage" alt="Fogueira" />
     </div>
   </section>
 </main>
