@@ -1,0 +1,48 @@
+<article class="card">
+  <div class="card__capa">
+    @if (temCapa()) {
+      <img
+        [src]="artigo().coverImageUrl"
+        alt=""
+        [attr.loading]="prioritario() ? 'eager' : 'lazy'"
+        [attr.fetchpriority]="prioritario() ? 'high' : null"
+        decoding="async"
+      />
+    } @else {
+      <div class="card__sem-capa" aria-hidden="true">{{ inicial() }}</div>
+    }
+
+    @if (nota(); as valor) {
+      <p class="card__nota">
+        <span class="apenas-para-leitor-de-tela">Nota</span>{{ valor }}
+      </p>
+    }
+
+    <div class="card__faixa">
+      @if (artigo().game; as jogo) {
+        <p class="card__jogo">{{ jogo }}</p>
+      }
+      <h2 class="card__titulo">
+        <a [routerLink]="['/artigo', artigo().slug]">{{ artigo().title }}</a>
+      </h2>
+    </div>
+  </div>
+
+  <div class="card__corpo">
+    <p class="card__resumo">{{ artigo().summary }}</p>
+
+    <div class="card__rodape">
+      <time [attr.datetime]="artigo().publishedAt">
+        {{ artigo().publishedAt | date: "d 'de' MMMM 'de' y" }}
+      </time>
+
+      @if (artigo().tags.length) {
+        <ul class="card__tags">
+          @for (tag of artigo().tags; track tag.slug) {
+            <li><a [routerLink]="['/tag', tag.slug]">#{{ tag.slug }}</a></li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+</article>

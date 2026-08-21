@@ -1,0 +1,13 @@
+@if (totalDePaginas() > 1) {
+  <nav class="paginacao" aria-label="Paginação dos artigos">
+    <button type="button" (click)="anterior()" [disabled]="!temAnterior()">
+      <span aria-hidden="true">←</span> Anterior
+    </button>
+
+    <p aria-live="polite">Página {{ paginaAtual() + 1 }} de {{ totalDePaginas() }}</p>
+
+    <button type="button" (click)="proxima()" [disabled]="!temProxima()">
+      Próxima <span aria-hidden="true">→</span>
+    </button>
+  </nav>
+}

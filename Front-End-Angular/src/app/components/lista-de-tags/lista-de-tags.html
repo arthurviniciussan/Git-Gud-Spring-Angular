@@ -1,0 +1,11 @@
+@if (tags().length) {
+  <nav class="tags" aria-label="Assuntos">
+    <ul>
+      @for (tag of tags(); track tag.slug) {
+        <li>
+          <a [routerLink]="['/tag', tag.slug]" routerLinkActive="esta-ativa">#{{ tag.slug }}</a>
+        </li>
+      }
+    </ul>
+  </nav>
+}

@@ -1,0 +1,154 @@
+.cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--fundo) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borda);
+}
+
+.cabecalho__interno {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 64px;
+}
+
+.cabecalho__marca {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  img {
+    height: 32px;
+    width: auto;
+    // A logo e clara: no tema claro ela some no fundo sem um leve contorno.
+    filter: drop-shadow(0 1px 1px rgb(0 0 0 / 25%));
+  }
+}
+
+.cabecalho__navegacao {
+  display: flex;
+  gap: 20px;
+  margin-inline-start: 8px;
+
+  a {
+    color: var(--texto-suave);
+    text-decoration: none;
+    font-size: 0.95rem;
+
+    &:hover,
+    &.esta-ativo {
+      color: var(--acento);
+    }
+  }
+}
+
+.cabecalho__ferramentas {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-inline-start: auto;
+}
+
+.botao-icone {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: var(--raio-pequeno);
+  background: transparent;
+  color: var(--texto-suave);
+  cursor: pointer;
+  transition: background var(--transicao), color var(--transicao);
+
+  &:hover {
+    background: var(--fundo-sutil);
+    color: var(--acento);
+  }
+
+  svg {
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .icone-cheio {
+    fill: currentColor;
+    stroke: none;
+  }
+}
+
+.busca {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  padding-inline-start: 14px;
+  background: var(--fundo-elevado);
+  transition: border-color var(--transicao);
+
+  &:focus-within {
+    border-color: var(--borda-forte);
+  }
+
+  input {
+    width: 190px;
+    border: 0;
+    background: transparent;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    outline: none;
+
+    &::placeholder {
+      color: var(--texto-suave);
+      opacity: 0.75;
+    }
+
+    // O X nativo do type=search some no tema escuro; o Esc continua limpando.
+    &::-webkit-search-cancel-button {
+      filter: grayscale(1) opacity(0.5);
+    }
+  }
+
+  .botao-icone {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+.apenas-no-celular {
+  display: none;
+}
+
+// Em telas estreitas a busca vira um botao que abre um campo em linha propria.
+@media (max-width: 720px) {
+  .apenas-no-celular {
+    display: grid;
+  }
+
+  .cabecalho__interno {
+    flex-wrap: wrap;
+  }
+
+  .busca {
+    display: none;
+
+    &.busca--aberta {
+      display: flex;
+      order: 10;
+      width: 100%;
+      margin-block-end: 12px;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+}

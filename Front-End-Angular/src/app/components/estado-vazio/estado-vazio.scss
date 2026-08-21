@@ -1,0 +1,23 @@
+.estado-vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-block: 64px;
+  text-align: center;
+
+  img {
+    width: 160px;
+    height: auto;
+    opacity: 0.55;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  p {
+    max-width: 46ch;
+    color: var(--texto-suave);
+  }
+}

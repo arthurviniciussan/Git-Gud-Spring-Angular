@@ -1,0 +1,32 @@
+<div class="conteudo-central">
+  <header class="cabecalho-da-tag">
+    <p class="cabecalho-da-tag__rotulo">Assunto</p>
+    <h1>#{{ slug() }}</h1>
+    <a routerLink="/">← Todos os artigos</a>
+  </header>
+
+  @if (carregando()) {
+    <ul class="grade" aria-hidden="true">
+      @for (esqueleto of [1, 2, 3]; track esqueleto) {
+        <li class="esqueleto"></li>
+      }
+    </ul>
+  } @else if (vazio()) {
+    <app-estado-vazio
+      titulo="Nenhum artigo com esse assunto"
+      descricao="Ainda não escrevi nada marcado com esta tag."
+    />
+  } @else if (pagina(); as resultado) {
+    <ul class="grade">
+      @for (artigo of resultado.content; track artigo.slug) {
+        <li><app-card-de-artigo [artigo]="artigo" /></li>
+      }
+    </ul>
+
+    <app-paginacao
+      [paginaAtual]="resultado.page"
+      [totalDePaginas]="resultado.totalPages"
+      (mudou)="irParaPagina($event)"
+    />
+  }
+</div>

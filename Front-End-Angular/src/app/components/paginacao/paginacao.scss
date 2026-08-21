@@ -1,0 +1,34 @@
+.paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-block-start: 48px;
+
+  button {
+    padding: 9px 18px;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio-pequeno);
+    background: var(--fundo-elevado);
+    color: var(--texto);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color var(--transicao), color var(--transicao);
+
+    &:hover:not(:disabled) {
+      border-color: var(--borda-forte);
+      color: var(--acento);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  p {
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+}

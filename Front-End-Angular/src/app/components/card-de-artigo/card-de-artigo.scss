@@ -1,0 +1,160 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--fundo-elevado);
+  box-shadow: var(--sombra);
+  transition: transform var(--transicao), box-shadow var(--transicao), border-color var(--transicao);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sombra-elevada);
+    border-color: var(--borda-forte);
+  }
+
+  &:hover .card__capa img {
+    transform: scale(1.04);
+  }
+
+  // O anel de foco pertence ao card inteiro, nao so ao texto do titulo.
+  &:has(.card__titulo a:focus-visible) {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+  }
+}
+
+.card__capa {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--fundo-sutil);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+}
+
+.card__sem-capa {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--fundo-sutil), var(--borda));
+  color: var(--borda-forte);
+  font-size: 4rem;
+  font-weight: 700;
+}
+
+// O gradiente e o que garante o titulo legivel: a capa e escolhida por artigo,
+// entao nao da para contar com uma imagem escura. Sem ele, capa clara + titulo
+// claro vira texto invisivel.
+.card__faixa {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 40px 18px 16px;
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 88%) 0%,
+    rgb(0 0 0 / 62%) 45%,
+    rgb(0 0 0 / 0%) 100%
+  );
+}
+
+.card__jogo {
+  margin-block-end: 2px;
+  color: #e7c75b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card__titulo {
+  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 0 1px 3px rgb(0 0 0 / 70%);
+
+    // Estica o link sobre o card inteiro, mantendo o titulo como nome acessivel.
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+}
+
+.card__corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  padding: 16px 18px 18px;
+}
+
+.card__resumo {
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+  // Resumo longo nao pode desalinhar a altura dos cards da grade.
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card__rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-block-start: auto;
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+}
+
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-inline-start: auto;
+  list-style: none;
+
+  a {
+    position: relative;
+    // Acima do link esticado, para a tag continuar clicavel.
+    z-index: 2;
+    color: var(--texto-suave);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--acento);
+    }
+  }
+}
+
+.card__nota {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: var(--preenchimento);
+  color: var(--sobre-preenchimento);
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 35%);
+}

@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.pagina {
+  flex: 1;
+  padding-block-start: 40px;
+
+  // O tabindex=-1 do alvo do "pular para o conteudo" nao deve desenhar anel.
+  &:focus {
+    outline: none;
+  }
+}

@@ -42,13 +42,16 @@ public class ArticleController {
     public PageResponse<ArticleSummaryResponse> list(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "" + TAMANHO_PADRAO_DA_PAGINA) int size,
-            @RequestParam(required = false) String tag) {
+            @RequestParam(required = false) String tag,
+            @RequestParam(required = false) String q) {
 
         Pageable pagina = paginar(page, size);
 
-        var artigos = tag == null || tag.isBlank()
-                ? articleService.listPublished(pagina)
-                : articleService.listPublishedByTag(tag, pagina);
+        // A tag vem antes da busca: estando na pagina de uma tag, o filtro dela
+        // manda. Combinar os dois so faria sentido com muito mais conteudo.
+        var artigos = preenchido(tag) ? articleService.listPublishedByTag(tag, pagina)
+                : preenchido(q) ? articleService.search(q, pagina)
+                : articleService.listPublished(pagina);
 
         return PageResponse.of(artigos, ArticleSummaryResponse::from);
     }
@@ -61,6 +64,10 @@ public class ArticleController {
     @GetMapping("/tags")
     public List<TagResponse> tags() {
         return tagRepository.findAllByOrderByNameAsc().stream().map(TagResponse::from).toList();
+    }
+
+    private boolean preenchido(String parametro) {
+        return parametro != null && !parametro.isBlank();
     }
 
     private Pageable paginar(int page, int size) {
