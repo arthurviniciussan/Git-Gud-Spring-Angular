@@ -32,6 +32,19 @@ openssl rand -base64 48
 
 Depois, cada bloco em um terminal:
 
+> **Mantenha as aspas simples do `.env.example`.** O hash BCrypt começa com
+> `$2a$12$` e o `$` é lido como início de variável: sem aspas, o Docker Compose
+> entrega `$2a$12` para a aplicação e o `source` do bash entrega `a2`. Vale o
+> mesmo para senha com `&`, `#` ou espaço.
+
+**Tudo em contêiner** — uma linha, e o banco sobe junto:
+
+```bash
+docker compose up --build        # http://localhost:4200
+```
+
+**Ou rodando na máquina**, que preserva hot reload e depuração pelo editor:
+
 ```bash
 docker compose up -d db          # MySQL em localhost:3306
 
