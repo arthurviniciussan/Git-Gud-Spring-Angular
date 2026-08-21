@@ -1,48 +1,65 @@
-import { Component, forwardRef, Input } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from "@angular/forms";
+import { Component, forwardRef, input, signal } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
-type InputTypes = "text" | "email" | "password";
+type TipoDeCampo = 'text' | 'email' | 'password';
 
+/**
+ * Campo de formulario com rotulo e icone.
+ *
+ * <p>Implementa ControlValueAccessor, entao funciona direto com formControlName.
+ */
 @Component({
-  selector: "app-primary-input",
+  selector: 'app-primary-input',
   imports: [ReactiveFormsModule],
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => PrimaryInput),
-    multi: true
-  }
-],
-  templateUrl: "./primary-input.html",
-  styleUrl: "./primary-input.scss",
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => PrimaryInput),
+      multi: true,
+    },
+  ],
+  templateUrl: './primary-input.html',
+  styleUrl: './primary-input.scss',
 })
-export class PrimaryInput implements ControlValueAccessor{
+export class PrimaryInput implements ControlValueAccessor {
+  readonly type = input<TipoDeCampo>('text');
+  readonly placeholder = input('');
+  readonly label = input('');
+  readonly inputName = input('');
 
-  @Input() type: InputTypes = "text";
-  @Input() placeholder: string = "";
-  @Input() label: string = "";
-  @Input() inputName: string = "";
+  /** Sem isto o gerenciador de senhas do navegador nao reconhece o campo. */
+  readonly autocomplete = input('off');
 
-  value: string = ''
-  onChange: any = () => {}
-  onTouched: any = () => {}
+  // Signals, e nao propriedades comuns: com change detection zoneless, escrever
+  // num campo pelo codigo (form.setValue, carregar um rascunho para editar) nao
+  // notificaria o template e o campo continuaria mostrando o valor antigo.
+  readonly value = signal('');
+  readonly desabilitado = signal(false);
 
-  onInput(event: Event){
-    const value = (event.target as HTMLInputElement).value
-    this.onChange(value)
+  private aoMudar: (valor: string) => void = () => undefined;
+  private aoTocar: () => void = () => undefined;
+
+  onInput(evento: Event): void {
+    this.aoMudar((evento.target as HTMLInputElement).value);
   }
 
-  writeValue(value: any): void {
-    this.value = value;
+  onBlur(): void {
+    this.aoTocar();
   }
 
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
+  writeValue(valor: string | null): void {
+    this.value.set(valor ?? '');
   }
 
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
+  registerOnChange(fn: (valor: string) => void): void {
+    this.aoMudar = fn;
   }
 
+  registerOnTouched(fn: () => void): void {
+    this.aoTocar = fn;
+  }
 
-  setDisabledState(isDisabled: boolean): void {}
+  setDisabledState(desabilitado: boolean): void {
+    this.desabilitado.set(desabilitado);
+  }
 }

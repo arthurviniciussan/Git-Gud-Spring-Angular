@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 /**
- * Moldura das telas de entrada: logo, titulo, conteudo projetado e os botoes.
+ * Moldura das telas de entrada: formulario a esquerda, identidade a direita.
  *
  * <p>O botao secundario e opcional. O blog nao tem cadastro, entao o login do
  * admin nao tem para onde mandar o visitante — mas manter o botao como opcao
@@ -14,17 +14,26 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './default-login-layout.scss',
 })
 export class DefaultLoginLayout {
-  logoImage = 'assets/log-Git-Gud!.png';
-  bonfireImage = '/assets/main-bonfire-image-removebg.png';
+  readonly logoImage = 'assets/log-Git-Gud!.png';
+  readonly bonfireImage = '/assets/main-bonfire-image-removebg.png';
 
-  @Input() title = '';
-  @Input() primaryBtnText = '';
+  readonly title = input('');
+  readonly primaryBtnText = input('');
   /** Vazio esconde o botao secundario e o separador "or". */
-  @Input() secondaryBtnText = '';
-  @Input() disablePrimaryBtn = true;
+  readonly secondaryBtnText = input('');
+  readonly disablePrimaryBtn = input(true);
 
-  @Output('submit') onSubmit = new EventEmitter<void>();
-  @Output('navigate') onNavigate = new EventEmitter<void>();
+  /**
+   * Id do formulario projetado.
+   *
+   * <p>O botao fica FORA do <form> (o form entra por ng-content), entao sem o
+   * atributo `form` apontando para ele o Enter no campo nao enviaria nada — e
+   * ninguem espera precisar clicar no botao para entrar.
+   */
+  readonly formularioId = input('');
+
+  readonly onSubmit = output<void>({ alias: 'submit' });
+  readonly onNavigate = output<void>({ alias: 'navigate' });
 
   submit(): void {
     this.onSubmit.emit();

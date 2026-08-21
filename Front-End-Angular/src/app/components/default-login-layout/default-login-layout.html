@@ -1,27 +1,34 @@
-<main>
-  <section class="form-section">
-    <img [src]="logoImage" alt="Logo do GitGud" />
-    <h2>{{ title }}</h2>
-    <ng-content></ng-content>
+<main class="entrada">
+  <section class="entrada__formulario">
+    <div class="cartao">
+      <img class="cartao__logo" [src]="logoImage" alt="GitGud" width="200" height="52" />
+      <h1 class="cartao__titulo">{{ title() }}</h1>
 
-    <button class="primaryBtn" (click)="submit()" [disabled]="disablePrimaryBtn">
-      {{ primaryBtnText }}
-    </button>
+      <ng-content></ng-content>
 
-    @if (secondaryBtnText) {
-      <div class="or-div">
-        <div class="simple-line"></div>
-        <span>or</span>
-        <div class="simple-line"></div>
-      </div>
-      <button class="secondaryBtn" (click)="navigate()">{{ secondaryBtnText }}</button>
-    }
+      <button
+        class="botao botao--primario"
+        [type]="formularioId() ? 'submit' : 'button'"
+        [attr.form]="formularioId() || null"
+        [disabled]="disablePrimaryBtn()"
+        (click)="submit()"
+      >
+        {{ primaryBtnText() }}
+      </button>
+
+      @if (secondaryBtnText()) {
+        <div class="separador"><span>ou</span></div>
+        <button class="botao botao--secundario" type="button" (click)="navigate()">
+          {{ secondaryBtnText() }}
+        </button>
+      }
+    </div>
   </section>
 
-  <section class="main-section">
-    <div class="main-div">
-      <h1>Git Gud, Bruh!</h1>
-      <img class="bonfire-image" [src]="bonfireImage" alt="Fogueira" />
+  <section class="entrada__marca" aria-hidden="true">
+    <div class="entrada__marca-interna">
+      <h2>Git Gud, Bruh!</h2>
+      <img class="fogueira" [src]="bonfireImage" alt="" />
     </div>
   </section>
 </main>

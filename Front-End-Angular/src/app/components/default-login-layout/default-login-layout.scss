@@ -1,137 +1,160 @@
-@use "../../../../src/styles/variables.scss" as v;
+// Nenhuma cor fixa aqui. A versao anterior tinha `background: #fff` no cartao e
+// `color: #000` no titulo, enquanto o texto herdava a cor do tema — no tema
+// escuro isso dava texto creme sobre branco e titulo preto sobre fundo escuro,
+// os dois invisiveis.
 
-
-main {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background: v.$grey-bg;
-
-    section {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-        border-radius: 16px;
-        padding: 32px 24px;
-        background: #fff;
-    }
-
-    .main-section {
-        gap: 16px;
-        flex-grow: 1;
-        background-color: v.$grey-bg;
-        border-radius: 16px;
-        margin: 24px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        h1 {
-            color: #000000;
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-            text-align: center;
-            font-family: "Noto Serif", serif;
-        }
-    }
-
-    .form-section {
-        flex-grow: 0.3;
-        background: #fff;
-        box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-        border-radius: 16px;
-        margin: 24px 0;
-        min-width: 320px;
-        max-width: 400px;
-
-        img {
-            width: 220px;
-            margin-bottom: 16px;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 16px;
-            font-family: "Noto Serif", serif;
-        }
-
-
-        button {
-            width: 100%;
-            padding: 10px 35px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
-
-            &:disabled {
-                opacity: 0.8;
-            }
-        }
-
-        .primaryBtn {
-            background-color: v.$primary-color;
-            color: #fff;
-            box-shadow: 0px 8px 12px rgba($color: #131210, $alpha: 1.0);
-            font-family: "Noto Serif", serif;
-        }
-
-        .secondaryBtn {
-            background-color: #fff;
-            color: v.$secondary-color;
-            border: 1px solid v.$primary-color;
-            font-family: "Noto Serif", serif;
-        }
-
-        button:hover {
-            background: v.$secondary-color;
-            color: #fff;
-            transform: translateY(-2px) scale(1.03);
-        }
-
-        .or-div {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 16px 0;
-            gap: 20px;
-            width: 100%;
-            text-transform: uppercase;
-            .simple-line{
-                flex-grow: 1;
-                height: 1px;
-                background-color: v.$text-color;
-                display: flex;
-                flex-direction: row;
-                min-width: 100%px;
-            }
-            span {
-                color: v.$text-color;
-                font-size: 1rem;
-                padding: 0 8px;
-                font-weight: 400;
-            }
-        }
-    }
-
-    .bonfire-image {
-        width: 450px;
-        height: auto;
-        transition: transform 0.9s ease;
-        cursor: pointer;
-    }
-    .main-div:hover {
-        transition: transform 0.2s;
-        transform: translateY(-2px) scale(1.01);
-    }
+.entrada {
+  display: grid;
+  grid-template-columns: minmax(360px, 460px) 1fr;
+  min-height: 100vh;
+  background: var(--fundo);
 }
 
+.entrada__formulario {
+  display: grid;
+  place-items: center;
+  padding: 32px 28px;
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 380px;
+  padding: 40px 32px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--fundo-elevado);
+  color: var(--texto);
+  box-shadow: var(--sombra-elevada);
+
+  // O formulario projetado ocupa a largura toda do cartao.
+  ::ng-deep form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    margin-block-end: 28px;
+  }
+}
+
+.cartao__logo {
+  width: 190px;
+  height: auto;
+  margin-block-end: 20px;
+  // O PNG da logo tem fundo branco embutido. Sem tratamento ele vira um
+  // retangulo solto no tema escuro; com borda e cantos arredondados ele le
+  // como selo. O conserto de verdade e um PNG transparente com o texto claro.
+  padding: 8px 12px;
+  border-radius: var(--raio-pequeno);
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+}
+
+.cartao__titulo {
+  margin-block-end: 28px;
+  color: var(--texto);
+  font-size: 1.45rem;
+  text-align: center;
+}
+
+.botao {
+  width: 100%;
+  padding: 13px 24px;
+  border: 1px solid transparent;
+  border-radius: var(--raio-pequeno);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter var(--transicao), transform var(--transicao), opacity var(--transicao);
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+  }
+}
+
+.botao--primario {
+  background: var(--preenchimento);
+  // Texto ESCURO sobre o dourado. A versao anterior usava branco, o que dava
+  // contraste de ~1,8:1 — bem abaixo do minimo legivel de 4,5:1.
+  color: var(--sobre-preenchimento);
+}
+
+.botao--secundario {
+  margin-block-start: 12px;
+  border-color: var(--borda-forte);
+  background: transparent;
+  color: var(--acento);
+}
+
+.separador {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin-block-start: 20px;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--borda);
+  }
+}
+
+.entrada__marca {
+  display: grid;
+  place-items: center;
+  padding: 40px;
+  background:
+    radial-gradient(circle at 50% 65%, color-mix(in srgb, var(--preenchimento) 18%, transparent), transparent 60%),
+    var(--fundo-sutil);
+}
+
+.entrada__marca-interna {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    // Token de TEXTO: escurece no tema claro, brilha no escuro.
+    color: var(--acento);
+  }
+}
+
+.fogueira {
+  width: min(420px, 45vw);
+  height: auto;
+  transition: transform 600ms ease;
+
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+}
+
+// Abaixo de 900px o painel de identidade sai: numa tela de celular ele empurra
+// o formulario para fora da primeira dobra.
+@media (max-width: 900px) {
+  .entrada {
+    grid-template-columns: 1fr;
+  }
+
+  .entrada__marca {
+    display: none;
+  }
+}

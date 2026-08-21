@@ -1,17 +1,10 @@
-@use '../../../styles/variables.scss' as v;
-
-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 34px;
-}
-
 .erro {
-  margin-top: 12px;
-  font-size: 0.875rem;
-  color: #b3261e;
-  font-family: 'Noto Serif', serif;
+  padding: 10px 14px;
+  border: 1px solid color-mix(in srgb, #d93025 45%, transparent);
+  border-radius: var(--raio-pequeno);
+  background: color-mix(in srgb, #d93025 12%, transparent);
+  // Vermelho proprio em vez do token: precisa ler como erro nos dois temas.
+  color: color-mix(in srgb, #d93025 70%, var(--texto));
+  font-size: 0.9rem;
   text-align: start;
 }

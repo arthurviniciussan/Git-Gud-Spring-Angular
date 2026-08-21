@@ -1,47 +1,78 @@
-@use "../../../../src/styles/variables.scss" as v;
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: start;
 
-.input-wrapper {
+  label {
+    color: var(--texto-suave);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+}
 
-    color: v.$text-color;
-    font-size: 1rem;
-    font-family: "Noto Serif", serif;
-    text-align: start;
+.campo__linha {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-pequeno);
+  background: var(--fundo);
+  overflow: hidden;
+  transition: border-color var(--transicao), box-shadow var(--transicao);
 
-    label {
-        margin-bottom: 12px;
-    }
-    .input-content {
-        width: 100%;
-        display: flex;
-        align-items: stretch;
-    }
+  &:focus-within {
+    border-color: var(--preenchimento);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--preenchimento) 30%, transparent);
+  }
+}
 
-    .icon {
-        display: flex;
-        align-items: center;
-        padding: 0 12px;
-        background-color: v.$primary-color;
-        border-radius: 0 8px 8px 0;
-        height: 50px;
-        margin-top: 6px;
-    }
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--texto);
+  font-size: 1rem;
 
-    ::ng-deep img {
-        height: 24px;
-        width: 24px;
-        display: flex;
-    }
-    input {
-        background-color: v.$secondary-grey-bg;
-        width: 100%;
-        padding: 10px 0px 12px 20px;
-        margin: 8px 0;
-        border: none;
-        border-radius: 8px 0 0 8px;
-        font-size: 1rem;
-        font-weight: 500;
-        align-items: left;
-        height: 48px;
-        box-sizing: border-box;
-    }
+  // O anel de foco fica na linha inteira, nao so no input.
+  &:focus-visible {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--texto-suave);
+    opacity: 0.7;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.campo__icone {
+  display: grid;
+  place-items: center;
+  padding-inline: 13px;
+  background: var(--preenchimento);
+  // Texto escuro sobre o dourado. Icone claro aqui seria o mesmo erro do
+  // botao dourado com texto branco.
+  color: var(--sobre-preenchimento);
+
+  // O icone e projetado por ng-content: pode ser <svg> ou <img>.
+  ::ng-deep svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  ::ng-deep img {
+    width: 20px;
+    height: 20px;
+  }
 }

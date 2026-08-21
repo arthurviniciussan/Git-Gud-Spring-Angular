@@ -1,13 +1,22 @@
-<div class="input-wrapper">
-    <label [for]="inputName">{{ label }}</label>
-    <div class="input-content">
-        <input 
-        [type]="type" 
-        [placeholder]="placeholder"
-        [value]="value"
-        (input)="onInput($event)"/>
-        <div class="icon">
-            <ng-content></ng-content>
-        </div>
-    </div>
+<div class="campo">
+  <!-- O for precisa casar com um id existente; sem ele o rotulo nao aponta
+       para lugar nenhum e clicar nele nao foca o campo. -->
+  <label [for]="inputName()">{{ label() }}</label>
+
+  <div class="campo__linha">
+    <input
+      [id]="inputName()"
+      [name]="inputName()"
+      [type]="type()"
+      [placeholder]="placeholder()"
+      [value]="value()"
+      [disabled]="desabilitado()"
+      [attr.autocomplete]="autocomplete()"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+    />
+    <span class="campo__icone" aria-hidden="true">
+      <ng-content></ng-content>
+    </span>
+  </div>
 </div>
