@@ -1,10 +1,11 @@
-// Paleta do GitGud. O dourado vem da identidade da tela de login.
+// Ponte para o SCSS antigo.
 //
-// Nota para a etapa de tema claro/escuro: $primary-color funciona muito bem como
-// TEXTO sobre fundo escuro, mas mal como preenchimento com texto claro por cima.
-// Botao dourado pede texto escuro, nao branco.
-$primary-color: #e7c75b;
-$secondary-color: #bda34f;
-$text-color: #555555;
-$grey-bg: #eeeeee;
-$secondary-grey-bg: #bdbdbd;
+// A fonte da verdade das cores sao os custom properties em styles.scss: eles
+// trocam sozinhos entre claro e escuro, o que uma variavel SCSS (resolvida em
+// build) nao consegue fazer. Estes aliases existem para os componentes que ainda
+// nao migraram nao quebrarem.
+$primary-color: var(--preenchimento);
+$secondary-color: var(--acento);
+$text-color: var(--texto-suave);
+$grey-bg: var(--fundo-sutil);
+$secondary-grey-bg: var(--borda);

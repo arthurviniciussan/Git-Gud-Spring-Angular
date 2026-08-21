@@ -1,0 +1,78 @@
+// ---------------------------------------------------------------------------
+// Tokens do GitGud
+//
+// O dourado da identidade (#e7c75b) e otimo como TEXTO sobre fundo escuro, e
+// ruim como texto sobre fundo claro — o contraste fica em torno de 1,7:1, bem
+// abaixo do minimo legivel de 4,5:1. Por isso existem dois papeis separados:
+//
+//   --acento          cor de TEXTO (link, titulo). Escurece no tema claro.
+//   --preenchimento   cor de FUNDO (botao, selo). Sempre com texto escuro em cima.
+//
+// Trocar um pelo outro e o erro que deixa botao dourado com texto branco
+// ilegivel — que era exatamente o caso do .primaryBtn antigo.
+// ---------------------------------------------------------------------------
+
+@mixin escuro {
+  color-scheme: dark;
+
+  --fundo: #121110;
+  --fundo-elevado: #1b1917;
+  --fundo-sutil: #23201c;
+  --borda: #332f28;
+  --borda-forte: #4a453b;
+
+  --texto: #f2eee6;
+  --texto-suave: #a79f92;
+
+  // Sobre #121110 este dourado da ~11:1. E onde ele brilha.
+  --acento: #e7c75b;
+  --acento-forte: #f3da8c;
+  --preenchimento: #c9a227;
+  --sobre-preenchimento: #121110;
+
+  --sombra: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px rgb(0 0 0 / 32%);
+  --sombra-elevada: 0 2px 4px rgb(0 0 0 / 48%), 0 16px 40px rgb(0 0 0 / 44%);
+}
+
+:root {
+  color-scheme: light;
+
+  --fundo: #faf8f4;
+  --fundo-elevado: #ffffff;
+  --fundo-sutil: #f1ece2;
+  --borda: #e2dbcd;
+  --borda-forte: #cec5b2;
+
+  --texto: #1c1a17;
+  --texto-suave: #5c564c;
+
+  // Dourado escurecido: o #e7c75b como texto sobre fundo claro seria ilegivel.
+  --acento: #7a5c10;
+  --acento-forte: #5c450b;
+  --preenchimento: #e7c75b;
+  --sobre-preenchimento: #1c1a17;
+
+  --sombra: 0 1px 2px rgb(28 26 23 / 6%), 0 8px 24px rgb(28 26 23 / 6%);
+  --sombra-elevada: 0 2px 4px rgb(28 26 23 / 8%), 0 16px 40px rgb(28 26 23 / 10%);
+
+  --raio: 12px;
+  --raio-pequeno: 8px;
+
+  // Largura de leitura confortavel: ~68 caracteres por linha.
+  --medida: 68ch;
+  --largura-do-conteudo: 1120px;
+
+  --transicao: 160ms ease;
+}
+
+// Tema escuro por preferencia do sistema — mas so quando nao ha escolha manual.
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema='claro']) {
+    @include escuro;
+  }
+}
+
+// Escolha manual vence a preferencia do sistema, nos dois sentidos.
+:root[data-tema='escuro'] {
+  @include escuro;
+}

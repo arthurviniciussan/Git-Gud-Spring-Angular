@@ -1,0 +1,49 @@
+@if (carregando()) {
+  <div class="conteudo-central">
+    <div class="esqueleto-do-artigo" aria-hidden="true"></div>
+    <p class="apenas-para-leitor-de-tela" role="status">Carregando o artigo…</p>
+  </div>
+} @else if (naoEncontrado()) {
+  <div class="conteudo-central nao-encontrado">
+    <h1>Artigo não encontrado</h1>
+    <p>Ou o endereço mudou, ou este texto ainda não foi publicado.</p>
+    <a routerLink="/">Voltar para a home</a>
+  </div>
+} @else if (artigo(); as texto) {
+  <article class="artigo">
+    <header class="artigo__capa" [class.artigo__capa--sem-imagem]="!texto.coverImageUrl">
+      @if (texto.coverImageUrl) {
+        <img [src]="texto.coverImageUrl" alt="" fetchpriority="high" decoding="async" />
+      }
+
+      <div class="artigo__faixa">
+        <div class="conteudo-central">
+          @if (texto.game) {
+            <p class="artigo__jogo">{{ texto.game }}</p>
+          }
+          <h1>{{ texto.title }}</h1>
+          <p class="artigo__meta">
+            <time [attr.datetime]="texto.publishedAt">
+              {{ texto.publishedAt | date: "d 'de' MMMM 'de' y" }}
+            </time>
+            @if (nota(); as valor) {
+              <span class="artigo__nota"><span class="apenas-para-leitor-de-tela">Nota </span>{{ valor }}</span>
+            }
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="conteudo-central">
+      <p class="artigo__resumo">{{ texto.summary }}</p>
+
+      <!-- HTML ja sanitizado no servidor: ver comentario no componente. -->
+      <div class="artigo__corpo" [innerHTML]="texto.contentHtml"></div>
+
+      <footer class="artigo__rodape">
+        <app-lista-de-tags [tags]="texto.tags" />
+        <a class="artigo__voltar" routerLink="/">← Ver todos os artigos</a>
+      </footer>
+    </div>
+  </article>
+}

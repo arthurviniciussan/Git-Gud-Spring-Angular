@@ -1,0 +1,41 @@
+.cabecalho-da-tag {
+  margin-block-end: 40px;
+
+  &__rotulo {
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin-block: 4px 10px;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    color: var(--acento);
+  }
+
+  a {
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+}
+
+.grade {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  list-style: none;
+}
+
+.esqueleto {
+  height: 340px;
+  border-radius: var(--raio);
+  background: var(--fundo-sutil);
+  animation: pulsar 1.4s ease-in-out infinite;
+}
+
+@keyframes pulsar {
+  50% {
+    opacity: 0.55;
+  }
+}

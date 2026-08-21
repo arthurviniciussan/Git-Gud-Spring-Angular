@@ -1,13 +1,217 @@
-/* You can add global styles to this file, and also import other style files */
 @use 'ngx-toastr/toastr';
+@use 'styles/tokens';
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Noto Serif", serif;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
+* {
+  margin: 0;
+  padding: 0;
 }
+
+html {
+  // O cabecalho e fixo: sem isto, o link de ancora para uma tag ficaria escondido.
+  scroll-padding-top: 88px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: 'Noto Serif', Georgia, 'Times New Roman', serif;
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:where(h1, h2, h3, h4) {
+  line-height: 1.2;
+  text-wrap: balance;
+  font-weight: 700;
+}
+
+:where(a) {
+  color: var(--acento);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--transicao);
+}
+
+:where(a:hover) {
+  color: var(--acento-forte);
+}
+
+:where(img, picture, svg, video) {
+  display: block;
+  max-width: 100%;
+}
+
+:where(button, input, textarea, select) {
+  font: inherit;
+  color: inherit;
+}
+
+// Foco visivel so para quem navega por teclado — sem o anel no clique de mouse.
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Visivel so para leitor de tela.
+.apenas-para-leitor-de-tela {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Atalho para quem usa teclado pular a navegacao.
+.pular-para-conteudo {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 10px 18px;
+  border-radius: var(--raio-pequeno);
+  background: var(--preenchimento);
+  color: var(--sobre-preenchimento);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--transicao);
+
+  &:focus-visible {
+    transform: translateY(0);
+  }
+}
+
+.conteudo-central {
+  width: 100%;
+  max-width: var(--largura-do-conteudo);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 32px);
+}
+
+// ---------------------------------------------------------------------------
+// Corpo do artigo — precisa ficar AQUI, e nao no SCSS do componente.
+//
+// O HTML vem do servidor por [innerHTML] e nao recebe os atributos de escopo do
+// Angular (_ngcontent-*). Um seletor no componente viraria
+// `.artigo__corpo[_ngcontent-x] p[_ngcontent-x]` e nunca casaria com esses
+// elementos — o texto sairia sem paragrafo, sem citacao e sem bloco de codigo.
+// ---------------------------------------------------------------------------
+.artigo__corpo {
+  max-width: var(--medida);
+  margin-inline: auto;
+  font-size: 1.08rem;
+
+  :is(h2, h3, h4) {
+    margin-block: 2em 0.6em;
+    color: var(--acento);
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  p {
+    margin-block-end: 1.3em;
+  }
+
+  :is(ul, ol) {
+    margin-block-end: 1.3em;
+    padding-inline-start: 1.4em;
+  }
+
+  li {
+    margin-block-end: 0.4em;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    margin-block: 2em;
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+  }
+
+  blockquote {
+    margin-block: 1.6em;
+    padding: 4px 22px;
+    border-inline-start: 3px solid var(--borda-forte);
+    color: var(--texto-suave);
+    font-style: italic;
+  }
+
+  pre {
+    margin-block: 1.6em;
+    padding: 18px;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio-pequeno);
+    background: var(--fundo-sutil);
+    // Codigo longo rola dentro do bloco; a pagina nunca rola na horizontal.
+    overflow-x: auto;
+  }
+
+  :is(code, pre) {
+    font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Code', Menlo, monospace;
+    font-size: 0.9em;
+  }
+
+  p > code {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--fundo-sutil);
+  }
+
+  table {
+    width: 100%;
+    margin-block: 1.6em;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  :is(th, td) {
+    padding: 8px 12px;
+    border: 1px solid var(--borda);
+    text-align: start;
+  }
+
+  th {
+    background: var(--fundo-sutil);
+  }
+
+  hr {
+    margin-block: 2.4em;
+    border: 0;
+    border-top: 1px solid var(--borda);
+  }
+}
+

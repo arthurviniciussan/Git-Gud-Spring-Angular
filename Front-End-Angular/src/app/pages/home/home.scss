@@ -1,0 +1,56 @@
+.apresentacao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-block-end: 48px;
+  text-align: center;
+
+  h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--acento);
+  }
+
+  p {
+    max-width: 46ch;
+    color: var(--texto-suave);
+    font-size: 1.05rem;
+  }
+}
+
+.cabecalho-da-lista {
+  margin-block-end: 40px;
+
+  h1 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+}
+
+.grade {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  list-style: none;
+}
+
+.esqueleto {
+  height: 340px;
+  border-radius: var(--raio);
+  background: linear-gradient(
+    100deg,
+    var(--fundo-sutil) 30%,
+    var(--borda) 50%,
+    var(--fundo-sutil) 70%
+  );
+  background-size: 300% 100%;
+  animation: brilho 1.4s ease-in-out infinite;
+}
+
+@keyframes brilho {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}

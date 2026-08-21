@@ -17,6 +17,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 @Service
@@ -56,6 +57,22 @@ public class ArticleService {
     public Page<Article> listPublishedByTag(String tagSlug, Pageable pagina) {
         return articleRepository.findByStatusAndTags_SlugOrderByPublishedAtDesc(
                 ArticleStatus.PUBLISHED, tagSlug, pagina);
+    }
+
+    /**
+     * Busca no blog.
+     *
+     * <p>Termo em branco cai na listagem normal: uma busca vazia significa "nao
+     * estou filtrando nada", nao "me devolva tudo por LIKE '%%'".
+     */
+    @Transactional(readOnly = true)
+    public Page<Article> search(String termo, Pageable pagina) {
+        String normalizado = termo == null ? "" : termo.trim().toLowerCase(Locale.ROOT);
+
+        if (normalizado.isEmpty()) {
+            return listPublished(pagina);
+        }
+        return articleRepository.search(ArticleStatus.PUBLISHED, normalizado, pagina);
     }
 
     /**

@@ -1,0 +1,149 @@
+.artigo__capa {
+  position: relative;
+  // A faixa precisa de altura para o titulo respirar, sem virar uma tela cheia.
+  min-height: clamp(260px, 42vw, 440px);
+  display: flex;
+  align-items: flex-end;
+  margin-block-start: -40px;
+  margin-block-end: 40px;
+  overflow: hidden;
+  background: var(--fundo-sutil);
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Sem capa, o titulo volta a ficar sobre o fundo da pagina — texto branco ali
+// seria ilegivel no tema claro.
+.artigo__capa--sem-imagem {
+  min-height: 0;
+  background: transparent;
+
+  .artigo__faixa {
+    position: static;
+    padding-block: 0;
+    background: none;
+  }
+
+  h1,
+  .artigo__meta time {
+    color: var(--texto);
+    text-shadow: none;
+  }
+
+  .artigo__jogo {
+    color: var(--acento);
+  }
+}
+
+.artigo__faixa {
+  position: relative;
+  width: 100%;
+  padding-block: 96px 32px;
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 90%) 0%,
+    rgb(0 0 0 / 64%) 50%,
+    rgb(0 0 0 / 0%) 100%
+  );
+
+  h1 {
+    max-width: 22ch;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: #fff;
+    text-shadow: 0 2px 6px rgb(0 0 0 / 70%);
+  }
+}
+
+.artigo__jogo {
+  margin-block-end: 6px;
+  color: #e7c75b;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.artigo__meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-block-start: 14px;
+
+  time {
+    color: rgb(255 255 255 / 82%);
+    font-size: 0.9rem;
+    text-shadow: 0 1px 3px rgb(0 0 0 / 70%);
+  }
+}
+
+.artigo__nota {
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--preenchimento);
+  color: var(--sobre-preenchimento);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.artigo__resumo {
+  max-width: var(--medida);
+  margin-inline: auto;
+  margin-block-end: 32px;
+  padding-inline-start: 18px;
+  border-inline-start: 3px solid var(--preenchimento);
+  color: var(--texto-suave);
+  font-size: 1.12rem;
+  font-style: italic;
+}
+
+.artigo__rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  max-width: var(--medida);
+  margin-inline: auto;
+  margin-block-start: 56px;
+  padding-block-start: 28px;
+  border-top: 1px solid var(--borda);
+}
+
+.artigo__voltar {
+  margin-inline-start: auto;
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.esqueleto-do-artigo {
+  height: 60vh;
+  border-radius: var(--raio);
+  background: var(--fundo-sutil);
+  animation: pulsar 1.4s ease-in-out infinite;
+}
+
+@keyframes pulsar {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.nao-encontrado {
+  padding-block: 80px;
+  text-align: center;
+
+  h1 {
+    margin-block-end: 10px;
+    font-size: 1.8rem;
+  }
+
+  p {
+    margin-block-end: 20px;
+    color: var(--texto-suave);
+  }
+}

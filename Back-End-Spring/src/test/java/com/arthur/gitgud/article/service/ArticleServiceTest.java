@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import java.time.Instant;
+import org.springframework.data.domain.PageRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -135,6 +137,34 @@ class ArticleServiceTest {
         assertThatThrownBy(() -> service.delete("nao-existe"))
                 .isInstanceOf(NotFoundException.class);
         verify(articleRepository, never()).delete(any());
+    }
+
+    @Test
+    @DisplayName("busca so alcanca artigo publicado")
+    void buscaSoAlcancaPublicado() {
+        service.search("elden", PageRequest.of(0, 10));
+
+        // O status entra na consulta, nao num filtro depois: rascunho nao pode
+        // aparecer nem na busca.
+        verify(articleRepository).search(eq(ArticleStatus.PUBLISHED), eq("elden"), any());
+    }
+
+    @Test
+    @DisplayName("busca ignora espaco em volta e diferenca de caixa")
+    void buscaNormalizaTermo() {
+        service.search("  Elden RING  ", PageRequest.of(0, 10));
+
+        verify(articleRepository).search(eq(ArticleStatus.PUBLISHED), eq("elden ring"), any());
+    }
+
+    @Test
+    @DisplayName("busca vazia devolve a lista normal em vez de tudo")
+    void buscaVaziaCaiNaListaNormal() {
+        service.search("   ", PageRequest.of(0, 10));
+
+        verify(articleRepository).findByStatusOrderByPublishedAtDesc(
+                eq(ArticleStatus.PUBLISHED), any());
+        verify(articleRepository, never()).search(any(), any(), any());
     }
 
     @Test

@@ -1,25 +1,32 @@
-@use '../../../styles/variables.scss' as v;
-
 .nao-encontrada {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  font-family: 'Noto Serif', serif;
+  gap: 10px;
+  padding: 24px;
   text-align: center;
 
+  img {
+    width: 180px;
+    height: auto;
+    margin-block-end: 8px;
+    opacity: 0.5;
+  }
+
   h1 {
-    font-size: 4rem;
-    color: v.$primary-color;
+    font-size: clamp(3rem, 12vw, 5rem);
+    color: var(--acento);
+    line-height: 1;
   }
 
   p {
-    color: v.$text-color;
+    max-width: 40ch;
+    color: var(--texto-suave);
   }
 
   a {
-    color: v.$secondary-color;
+    margin-block-start: 12px;
   }
 }

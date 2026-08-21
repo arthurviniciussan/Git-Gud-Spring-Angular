@@ -107,6 +107,7 @@ Todos no mesmo formato, em qualquer status:
 |---|---|---|
 | `GET` | `/api/articles?page=0&size=10` | Publicados, do mais recente. Sem o corpo do texto |
 | `GET` | `/api/articles?tag=rpg` | Filtra por tag |
+| `GET` | `/api/articles?q=elden` | Busca por título e resumo |
 | `GET` | `/api/articles/{slug}` | Artigo completo, com `contentHtml` |
 | `GET` | `/api/tags` | Todas as tags |
 
@@ -184,13 +185,16 @@ Back-End-Spring/src/main/java/com/arthur/gitgud/
 
 Back-End-Spring/src/main/resources/db/migration/   migrations Flyway (dono do schema)
 
-Front-End-Angular/src/app/
-  components/    reutilizáveis (PrimaryInput, DefaultLoginLayout)
-  pages/         uma pasta por tela
-  services/      acesso à API
-  guards/        proteção de rota
-  interceptors/  token e sessão expirada
-  types/         contratos da API
+Front-End-Angular/src/
+  styles/        tokens de cor (claro/escuro) e variáveis
+  app/
+    layouts/     moldura das páginas públicas (cabeçalho + rodapé)
+    components/  reutilizáveis (CardDeArtigo, Paginacao, ListaDeTags…)
+    pages/       uma pasta por tela
+    services/    acesso à API e tema
+    guards/      proteção de rota
+    interceptors/ token e sessão expirada
+    types/       contratos da API
 ```
 
 **Como as exceções se encaixam.** `common/exception` define as bases; cada módulo
@@ -205,4 +209,11 @@ de artigos entrar, o tratamento central não muda.
   nunca altera o banco.
 - **Nenhum segredo no repositório.** Tudo por variável de ambiente, sem valor
   padrão para o que protege o site.
+- **Cor é token, não valor fixo.** As cores vivem em custom properties
+  (`src/styles/_tokens.scss`) e trocam sozinhas entre claro e escuro. O dourado
+  tem dois papéis separados: `--acento` para texto e `--preenchimento` para
+  fundo. Trocar um pelo outro é o que produz botão dourado com texto ilegível.
+- **Estilo de conteúdo vindo do servidor mora no CSS global.** HTML injetado por
+  `[innerHTML]` não recebe os atributos de escopo do Angular, então regra
+  dentro do componente não o alcança.
 - Trabalho em branch, merge só com CI verde.

@@ -1,0 +1,46 @@
+<div class="conteudo-central">
+  @if (busca()) {
+    <header class="cabecalho-da-lista">
+      <h1>Resultados para “{{ busca() }}”</h1>
+    </header>
+  } @else {
+    <header class="apresentacao">
+      <h1>Git Gud, Bruh!</h1>
+      <p>Opiniões sobre jogos, sem pressa e sem nota inflada.</p>
+      <app-lista-de-tags [tags]="tags()" />
+    </header>
+  }
+
+  @if (carregando()) {
+    <ul class="grade" aria-hidden="true">
+      @for (esqueleto of [1, 2, 3, 4, 5, 6]; track esqueleto) {
+        <li class="esqueleto"></li>
+      }
+    </ul>
+    <p class="apenas-para-leitor-de-tela" role="status">Carregando artigos…</p>
+  } @else if (falhou()) {
+    <app-estado-vazio
+      titulo="Não deu para carregar os artigos"
+      descricao="O servidor não respondeu. Tente recarregar a página em instantes."
+    />
+  } @else if (vazio()) {
+    <app-estado-vazio
+      titulo="Nada por aqui ainda"
+      [descricao]="busca() ? 'Nenhum artigo encontrado para essa busca.' : 'O primeiro review está a caminho.'"
+    />
+  } @else if (pagina(); as resultado) {
+    <ul class="grade">
+      @for (artigo of resultado.content; track artigo.slug; let primeiro = $first) {
+        <li>
+          <app-card-de-artigo [artigo]="artigo" [prioritario]="primeiro && resultado.page === 0" />
+        </li>
+      }
+    </ul>
+
+    <app-paginacao
+      [paginaAtual]="resultado.page"
+      [totalDePaginas]="resultado.totalPages"
+      (mudou)="irParaPagina($event)"
+    />
+  }
+</div>

@@ -155,6 +155,27 @@ class ArticleControllerTest {
     }
 
     @Test
+    @DisplayName("busca no site usa a consulta de busca")
+    void buscaUsaConsultaDeBusca() throws Exception {
+        when(articleService.search(eq("elden"), any(Pageable.class))).thenReturn(pagina());
+
+        mvc.perform(get("/api/articles").param("q", "elden")).andExpect(status().isOk());
+
+        verify(articleService).search(eq("elden"), any(Pageable.class));
+    }
+
+    @Test
+    @DisplayName("a busca tambem e publica, sem token")
+    void buscaEPublica() throws Exception {
+        when(articleService.search(eq("elden"), any(Pageable.class)))
+                .thenReturn(pagina(artigoPublicado()));
+
+        mvc.perform(get("/api/articles").param("q", "elden"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].slug").value("elden-ring"));
+    }
+
+    @Test
     @DisplayName("tamanho de pagina exagerado e limitado no servidor")
     void limitaTamanhoDaPagina() throws Exception {
         when(articleService.listPublished(any(Pageable.class))).thenReturn(pagina());

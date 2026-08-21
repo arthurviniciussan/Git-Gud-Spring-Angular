@@ -1,0 +1,29 @@
+.tags ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.tags a {
+  display: inline-block;
+  padding: 5px 13px;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  background: var(--fundo-elevado);
+  color: var(--texto-suave);
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: border-color var(--transicao), color var(--transicao);
+
+  &:hover {
+    border-color: var(--borda-forte);
+    color: var(--acento);
+  }
+
+  &.esta-ativa {
+    border-color: var(--preenchimento);
+    background: var(--preenchimento);
+    color: var(--sobre-preenchimento);
+  }
+}
