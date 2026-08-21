@@ -39,7 +39,17 @@
 		</dependency>
 
 		<!-- O Flyway e dono do schema. O Hibernate roda com ddl-auto=validate
-		     e nunca altera o banco. flyway-mysql traz o dialeto do MySQL. -->
+		     e nunca altera o banco. flyway-mysql traz o dialeto do MySQL.
+
+		     spring-boot-flyway e obrigatorio: no Spring Boot 4 as auto-
+		     configuracoes foram divididas em modulos, e o FlywayAutoConfiguration
+		     mora nele. So com flyway-core a biblioteca entra no classpath mas
+		     ninguem a executa — as migrations nunca rodam e o ddl-auto: validate
+		     falha com "missing table [users]". -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-flyway</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
