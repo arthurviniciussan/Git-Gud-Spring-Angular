@@ -20,7 +20,7 @@ export class CabecalhoDoBlog {
   private readonly router = inject(Router);
   private readonly tema = inject(TemaService);
 
-  readonly logo = 'assets/log-Git-Gud!.png';
+  public logo = 'assets/log-Git-Gud!.png';
   readonly perfilNoGitHub = 'https://github.com/arthurviniciussan';
 
   readonly termo = new FormControl('', { nonNullable: true });
@@ -43,5 +43,7 @@ export class CabecalhoDoBlog {
 
   alternarTema(): void {
     this.tema.alternar();
+    this.logo = this.temaEfetivo() === 'escuro' ? 'assets/log-Git-Gud!.png' : 'assets/log-Git-Gud!-branco.png';
   }
 }
+
