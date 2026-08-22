@@ -1,0 +1,61 @@
+<div class="conteudo-central">
+  <header class="topo">
+    <div>
+      <h1>Artigos</h1>
+      @if (!carregando()) {
+        <p class="topo__resumo">
+          {{ publicados() }} publicados · {{ rascunhos() }} rascunhos
+        </p>
+      }
+    </div>
+    <a class="botao-principal" routerLink="/admin/artigos/novo">Escrever artigo</a>
+  </header>
+
+  @if (carregando()) {
+    <p class="vazio" role="status">Carregando…</p>
+  } @else if (!artigos().length) {
+    <div class="vazio">
+      <h2>Nenhum artigo ainda</h2>
+      <p>Comece pelo primeiro review — ele nasce como rascunho, então dá para escrever com calma.</p>
+      <a class="botao-principal" routerLink="/admin/artigos/novo">Escrever o primeiro</a>
+    </div>
+  } @else {
+    <ul class="lista">
+      @for (artigo of artigos(); track artigo.id) {
+        <li class="linha" [class.linha--ocupada]="ocupado() === artigo.id">
+          <div class="linha__texto">
+            <p class="linha__titulo">
+              <a [routerLink]="['/admin/artigos', artigo.id, 'editar']">{{ artigo.title }}</a>
+              <span class="selo" [class.selo--publicado]="artigo.status === 'PUBLISHED'">
+                {{ artigo.status === 'PUBLISHED' ? 'publicado' : 'rascunho' }}
+              </span>
+            </p>
+            <p class="linha__meta">
+              @if (artigo.game) { {{ artigo.game }} · }
+              editado {{ artigo.updatedAt | date: "d 'de' MMM 'de' y" }}
+              @if (artigo.status === 'PUBLISHED') { · /artigo/{{ artigo.slug }} }
+            </p>
+          </div>
+
+          <div class="linha__acoes">
+            @if (artigo.status === 'PUBLISHED') {
+              <a class="botao-secundario" [href]="'/artigo/' + artigo.slug" target="_blank" rel="noopener">Ver</a>
+              <button type="button" (click)="despublicar(artigo)" [disabled]="ocupado() === artigo.id">
+                Tirar do ar
+              </button>
+            } @else {
+              <button type="button" class="botao-principal botao-principal--pequeno"
+                      (click)="publicar(artigo)" [disabled]="ocupado() === artigo.id">
+                Publicar
+              </button>
+            }
+            <button type="button" class="botao-perigo" (click)="excluir(artigo)"
+                    [disabled]="ocupado() === artigo.id">
+              Apagar
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>

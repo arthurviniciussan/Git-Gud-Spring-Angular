@@ -1,0 +1,63 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--fundo);
+}
+
+.barra-do-painel {
+  border-bottom: 1px solid var(--borda);
+  background: var(--fundo-sutil);
+}
+
+.barra-do-painel__interna {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 60px;
+}
+
+.barra-do-painel__marca {
+  color: var(--acento);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+nav a {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--acento);
+  }
+}
+
+.barra-do-painel__sessao {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-inline-start: auto;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+
+  button {
+    padding: 6px 16px;
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--raio-pequeno);
+    background: transparent;
+    color: var(--texto);
+    font-size: 0.88rem;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--acento);
+      color: var(--acento);
+    }
+  }
+}
+
+.conteudo-do-painel {
+  flex: 1;
+  padding-block: 36px 60px;
+}

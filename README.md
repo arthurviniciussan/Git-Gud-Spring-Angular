@@ -122,6 +122,7 @@ Escrever exige `ROLE_ADMIN`:
 | `PATCH` | `/api/admin/articles/{id}/unpublish` | Tira do ar |
 | `DELETE` | `/api/admin/articles/{id}` | Apaga. `204` |
 | `POST` | `/api/admin/articles/preview` | Markdown → HTML, para o preview do editor |
+| `POST` | `/api/admin/images` | Upload de imagem (multipart, campo `arquivo`) |
 
 Corpo de criação — só `title`, `summary` e `contentMarkdown` são obrigatórios:
 
@@ -146,6 +147,43 @@ servidor da Etapa 5 não precisa repetir a limpeza em JavaScript.
 `elden-ring-e-dificil`), mas editar o título não muda o endereço — link
 publicado é link que precisa continuar funcionando. Títulos repetidos ganham
 sufixo (`-2`, `-3`).
+
+## Imagens
+
+As imagens dos artigos ficam **em disco**, num volume — não no banco. Imagem em
+BLOB incha o dump e deixa toda leitura mais pesada, sem ganho nenhum.
+
+O upload é convertido para **WebP** e limitado a 1600px de largura: um print de
+4K vira algumas centenas de KB, sem diferença visível. Página leve conta ponto
+no Google e é pré-requisito prático do AdSense.
+
+**GIF passa direto, sem conversão.** Converter manteria só o primeiro quadro, e
+num blog de jogos o GIF animado é justamente o ponto.
+
+O tipo do arquivo é conferido pelos **bytes de assinatura**, não pela extensão
+nem pelo `Content-Type` — os dois vêm de quem envia e podem mentir. E o nome do
+arquivo é sempre gerado pelo servidor: confiar no nome enviado é o caminho
+clássico para escrever fora da pasta de uploads.
+
+---
+
+## Publicando
+
+O painel fica em `/admin`, **não é linkado de lugar nenhum** e exige a senha.
+
+| Rota | O que faz |
+|---|---|
+| `/admin` | Lista de artigos: rascunhos e publicados |
+| `/admin/artigos/novo` | Escrever |
+| `/admin/artigos/:id/editar` | Editar |
+
+Você escreve em **Markdown**, com preview ao lado vindo do servidor — a mesma
+conversão que o artigo salvo recebe. Para inserir imagem, arraste o arquivo para
+o editor ou cole um print com `Ctrl+V`: ele sobe e vira Markdown no cursor.
+
+O texto é guardado no navegador enquanto você escreve. Se a aba fechar, o
+rascunho é oferecido de volta ao reabrir o editor. Sair com alteração não salva
+pede confirmação.
 
 **Rascunho é invisível**, inclusive pelo slug direto: responde `404`, não `403`.
 Um `403` confirmaria que o artigo existe.

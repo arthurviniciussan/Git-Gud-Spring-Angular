@@ -1,0 +1,54 @@
+<div class="editor">
+  <div class="editor__barra">
+    @for (atalho of atalhos; track atalho.rotulo) {
+      <button type="button" [title]="atalho.titulo" [attr.aria-label]="atalho.titulo"
+              (click)="aplicar(atalho)">{{ atalho.rotulo }}</button>
+    }
+
+    <p class="editor__contagem">
+      {{ contagem().palavras }} palavras · {{ contagem().minutos }} min de leitura
+    </p>
+  </div>
+
+  <div class="editor__paineis">
+    <div
+      class="editor__escrita"
+      [class.editor__escrita--arrastando]="arrastando()"
+      (dragover)="aoArrastarSobre($event)"
+      (dragleave)="aoSairDoArraste()"
+      (drop)="aoSoltar($event)"
+    >
+      <label class="apenas-para-leitor-de-tela" for="markdown">Texto do artigo em Markdown</label>
+      <textarea
+        #area
+        id="markdown"
+        [value]="texto()"
+        (input)="aoDigitar($event)"
+        (paste)="aoColar($event)"
+        placeholder="Escreva em Markdown. Arraste uma imagem para cá, ou cole um print com Ctrl+V."
+        spellcheck="true"
+      ></textarea>
+
+      @if (arrastando()) {
+        <p class="editor__aviso-de-arraste">Solte a imagem para enviar</p>
+      }
+    </div>
+
+    <div class="editor__preview">
+      <p class="editor__rotulo">Preview</p>
+      @if (html()) {
+        <!-- HTML sanitizado no servidor, pela mesma conversão do artigo salvo. -->
+        <div class="artigo__corpo" [innerHTML]="html()"></div>
+      } @else {
+        <p class="editor__preview-vazio">O resultado aparece aqui conforme você escreve.</p>
+      }
+    </div>
+  </div>
+
+  @if (enviandoImagem()) {
+    <p class="editor__estado" role="status">Enviando imagem…</p>
+  }
+  @if (erroDeImagem(); as mensagem) {
+    <p class="editor__estado editor__estado--erro" role="alert">{{ mensagem }}</p>
+  }
+</div>

@@ -1,0 +1,86 @@
+<div class="conteudo-central">
+  <header class="topo">
+    <a class="topo__voltar" routerLink="/admin">← Artigos</a>
+
+    <p class="topo__estado">
+      @if (salvando()) {
+        Salvando…
+      } @else if (salvo()) {
+        Tudo salvo
+      } @else {
+        Alterações não salvas
+      }
+      @if (publicado()) { <span class="selo selo--publicado">publicado</span> }
+    </p>
+
+    <div class="topo__acoes">
+      <button type="button" class="botao-secundario" (click)="salvar()" [disabled]="salvando()">
+        Salvar rascunho
+      </button>
+      @if (!publicado()) {
+        <button type="button" class="botao-principal" (click)="salvar(true)" [disabled]="salvando()">
+          Salvar e publicar
+        </button>
+      }
+    </div>
+  </header>
+
+  @if (rascunhoRecuperavel()) {
+    <div class="recuperacao" role="alert">
+      <p>Há um rascunho não salvo deste artigo, guardado no navegador.</p>
+      <div>
+        <button type="button" class="botao-principal" (click)="restaurarRascunho()">Recuperar</button>
+        <button type="button" class="botao-secundario" (click)="descartarRascunho()">Descartar</button>
+      </div>
+    </div>
+  }
+
+  @if (carregando()) {
+    <p role="status">Carregando o artigo…</p>
+  } @else {
+    <form class="formulario" [formGroup]="formulario">
+      <div class="campo campo--titulo">
+        <label for="titulo">Título</label>
+        <input id="titulo" formControlName="title" placeholder="Elden Ring é difícil, e tudo bem" />
+      </div>
+
+      <div class="campo">
+        <label for="resumo">Resumo</label>
+        <textarea id="resumo" formControlName="summary" rows="2"
+                  placeholder="Uma frase sobre o que o texto defende. Aparece no card e no Google."></textarea>
+      </div>
+
+      <div class="linha-de-campos">
+        <div class="campo">
+          <label for="jogo">Jogo</label>
+          <input id="jogo" formControlName="game" placeholder="Elden Ring" />
+        </div>
+        <div class="campo campo--curto">
+          <label for="nota">Nota</label>
+          <input id="nota" type="number" formControlName="score" min="0" max="10" step="0.5" placeholder="9.5" />
+        </div>
+        <div class="campo">
+          <label for="tags">Tags</label>
+          <input id="tags" formControlName="tags" placeholder="RPG, Souls-like" />
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="capa">Imagem de capa</label>
+        <input id="capa" formControlName="coverImageUrl" placeholder="/uploads/2026/08/capa.webp" />
+        <p class="campo__dica">
+          Arraste uma imagem para o editor abaixo e copie a URL gerada, ou cole um print com Ctrl+V.
+        </p>
+      </div>
+
+      @if (formulario.controls.coverImageUrl.value) {
+        <img class="previa-da-capa" [src]="formulario.controls.coverImageUrl.value" alt="Prévia da capa" />
+      }
+    </form>
+
+    <app-editor-de-markdown
+      [texto]="formulario.controls.contentMarkdown.value"
+      (textoMudou)="textoMudou($event)"
+    />
+  }
+</div>

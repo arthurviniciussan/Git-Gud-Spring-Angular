@@ -27,8 +27,13 @@ services:
       GITGUD_ADMIN_PASSWORD_HASH: ${GITGUD_ADMIN_PASSWORD_HASH}
       GITGUD_JWT_SECRET: ${GITGUD_JWT_SECRET}
       GITGUD_CORS_ORIGINS: ${GITGUD_CORS_ORIGINS}
+      GITGUD_UPLOADS_DIR: /dados/uploads
     ports:
       - "8080:8080"
+    volumes:
+      # Sem este volume, toda imagem enviada some quando o container e
+      # recriado — e os artigos ficam com as capas quebradas.
+      - uploads_data:/dados/uploads
     depends_on:
       db:
         condition: service_healthy
@@ -47,3 +52,4 @@ services:
 
 volumes:
   db_data:
+  uploads_data:

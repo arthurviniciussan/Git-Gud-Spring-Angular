@@ -102,6 +102,14 @@
 			<version>1.23.1</version>
 		</dependency>
 
+		<!-- O ImageIO do JDK le e escreve JPEG, PNG e GIF, mas nao escreve WebP.
+		     Esta lib acrescenta o writer (com binario nativo embutido). -->
+		<dependency>
+			<groupId>org.sejda.imageio</groupId>
+			<artifactId>webp-imageio</artifactId>
+			<version>0.1.6</version>
+		</dependency>
+
 		<!-- ================== testes ================== -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
