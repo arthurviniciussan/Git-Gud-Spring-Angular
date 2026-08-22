@@ -1,21 +1,24 @@
 <app-default-login-layout
   title="Entrar no painel"
   primaryBtnText="entrar"
-  (submit)="submit()"
+  formularioId="formulario-de-login"
   [disablePrimaryBtn]="!loginForm.valid || enviando()"
+  (submit)="submit()"
 >
-  <form [formGroup]="loginForm">
+  <form id="formulario-de-login" [formGroup]="loginForm" (ngSubmit)="submit()">
     <app-primary-input
       formControlName="email"
       inputName="email"
       type="email"
       label="Email"
       placeholder="voce@exemplo.com"
+      autocomplete="username"
     >
-      <img src="/assets/email-icon.png" alt="" />
+      <svg viewBox="0 0 24 24">
+        <rect x="2.5" y="5" width="19" height="14" rx="2" />
+        <path d="m3 6.5 9 6 9-6" />
+      </svg>
     </app-primary-input>
-
-    <div style="height: 18px"></div>
 
     <app-primary-input
       formControlName="password"
@@ -23,8 +26,12 @@
       type="password"
       label="Senha"
       placeholder="Sua senha"
+      autocomplete="current-password"
     >
-      <img src="/assets/password-icon.png" alt="" />
+      <svg viewBox="0 0 24 24">
+        <rect x="4" y="10.5" width="16" height="10" rx="2" />
+        <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+      </svg>
     </app-primary-input>
 
     @if (erro(); as mensagem) {
