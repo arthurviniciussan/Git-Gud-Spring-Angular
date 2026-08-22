@@ -9,6 +9,9 @@ import jakarta.validation.constraints.Size;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
+import org.springframework.util.unit.DataSize;
+
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 
@@ -26,7 +29,8 @@ public record GitgudProperties(
         @Valid @NotNull Admin admin,
         @Valid @NotNull Jwt jwt,
         @Valid @NotNull Cors cors,
-        @Valid @NotNull Login login) {
+        @Valid @NotNull Login login,
+        @Valid @NotNull Uploads uploads) {
 
     /**
      * O unico usuario do sistema.
@@ -54,5 +58,17 @@ public record GitgudProperties(
     }
 
     public record Login(@Positive int maxAttempts, @NotNull Duration lockDuration) {
+    }
+
+    /**
+     * Onde e como as imagens dos artigos sao guardadas.
+     *
+     * <p>Ficam em disco, num volume — nao no banco. Imagem em BLOB incha o dump
+     * e deixa toda leitura mais pesada, sem ganho nenhum para um blog.
+     */
+    public record Uploads(
+            @NotNull Path dir,
+            @NotNull DataSize maxSize,
+            @Positive int maxWidth) {
     }
 }

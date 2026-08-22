@@ -1,0 +1,20 @@
+<header class="barra-do-painel">
+  <div class="barra-do-painel__interna conteudo-central">
+    <a class="barra-do-painel__marca" routerLink="/admin">Painel do GitGud</a>
+
+    <nav aria-label="Painel">
+      <a routerLink="/" target="_blank" rel="noopener">Ver o blog ↗</a>
+    </nav>
+
+    <div class="barra-do-painel__sessao">
+      @if (sessao(); as usuario) {
+        <span>{{ usuario.name }}</span>
+      }
+      <button type="button" (click)="sair()">Sair</button>
+    </div>
+  </div>
+</header>
+
+<main class="conteudo-do-painel">
+  <router-outlet />
+</main>

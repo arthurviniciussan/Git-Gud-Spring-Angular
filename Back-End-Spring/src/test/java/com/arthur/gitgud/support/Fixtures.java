@@ -4,6 +4,9 @@ import com.arthur.gitgud.config.GitgudProperties;
 import com.arthur.gitgud.user.domain.Role;
 import com.arthur.gitgud.user.domain.User;
 
+import org.springframework.util.unit.DataSize;
+
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 
@@ -36,6 +39,8 @@ public final class Fixtures {
                 new GitgudProperties.Admin("admin@gitgud.dev", "Arthur", HASH_VALIDO),
                 new GitgudProperties.Jwt(SEGREDO_JWT, "gitgud-api", Duration.ofHours(2)),
                 new GitgudProperties.Cors(List.of("http://localhost:4200")),
-                new GitgudProperties.Login(5, Duration.ofMinutes(15)));
+                new GitgudProperties.Login(5, Duration.ofMinutes(15)),
+                new GitgudProperties.Uploads(
+                        Path.of("dados/uploads"), DataSize.ofMegabytes(5), 1600));
     }
 }

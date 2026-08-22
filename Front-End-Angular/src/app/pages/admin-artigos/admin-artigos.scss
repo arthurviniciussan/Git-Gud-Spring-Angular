@@ -1,0 +1,181 @@
+.topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-block-end: 32px;
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  &__resumo {
+    margin-block-start: 4px;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+  }
+
+  .botao-principal {
+    margin-inline-start: auto;
+  }
+}
+
+.botao-principal {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: var(--raio-pequeno);
+  background: var(--preenchimento);
+  color: var(--sobre-preenchimento);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+
+  &--pequeno {
+    padding: 7px 15px;
+    font-size: 0.85rem;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  padding: 16px 20px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--fundo-elevado);
+  transition: opacity var(--transicao), border-color var(--transicao);
+
+  &:hover {
+    border-color: var(--borda-forte);
+  }
+
+  &--ocupada {
+    opacity: 0.55;
+  }
+}
+
+.linha__texto {
+  min-width: 260px;
+  flex: 1;
+}
+
+.linha__titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+
+  a {
+    color: var(--texto);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--acento);
+    }
+  }
+}
+
+.linha__meta {
+  margin-block-start: 4px;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.selo {
+  padding: 2px 10px;
+  border: 1px solid var(--borda-forte);
+  border-radius: 999px;
+  color: var(--texto-suave);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  &--publicado {
+    border-color: transparent;
+    background: var(--preenchimento);
+    color: var(--sobre-preenchimento);
+  }
+}
+
+.linha__acoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-inline-start: auto;
+
+  // :not(.botao-principal) e obrigatorio: `.linha__acoes button` tem
+  // especificidade maior que `.botao-principal`, entao sem isto a acao
+  // principal do rascunho perdia o fundo dourado e virava texto solto.
+  button:not(.botao-principal),
+  .botao-secundario {
+    padding: 7px 15px;
+    border: 1px solid var(--borda-forte);
+    border-radius: var(--raio-pequeno);
+    background: transparent;
+    color: var(--texto);
+    font-family: inherit;
+    font-size: 0.85rem;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      border-color: var(--acento);
+      color: var(--acento);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .botao-principal {
+    border: 0;
+  }
+
+  .botao-perigo {
+    padding: 7px 15px;
+  }
+
+  .botao-perigo:hover:not(:disabled) {
+    border-color: #d93025;
+    color: color-mix(in srgb, #d93025 75%, var(--texto));
+  }
+}
+
+.vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-block: 70px;
+  text-align: center;
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  p {
+    max-width: 46ch;
+    color: var(--texto-suave);
+  }
+}

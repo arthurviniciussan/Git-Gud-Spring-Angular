@@ -65,6 +65,8 @@ public class SecurityConfig {
                         // /api/articles tambem passaria pelo permitAll.
                         .requestMatchers(HttpMethod.GET,
                                 "/api/articles", "/api/articles/**", "/api/tags").permitAll()
+                        // As imagens dos artigos sao parte do conteudo publico.
+                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling(erros -> erros

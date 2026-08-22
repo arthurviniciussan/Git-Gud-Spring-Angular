@@ -1,0 +1,141 @@
+.editor {
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--fundo-elevado);
+  overflow: hidden;
+}
+
+.editor__barra {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--borda);
+  background: var(--fundo-sutil);
+
+  button {
+    min-width: 34px;
+    height: 30px;
+    padding-inline: 8px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--texto-suave);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--transicao), color var(--transicao);
+
+    &:hover {
+      background: var(--fundo-elevado);
+      color: var(--acento);
+      border-color: var(--borda);
+    }
+  }
+}
+
+.editor__contagem {
+  margin-inline-start: auto;
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.editor__paineis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 440px;
+}
+
+.editor__escrita {
+  position: relative;
+  display: flex;
+  border-inline-end: 1px solid var(--borda);
+  transition: background var(--transicao);
+
+  textarea {
+    width: 100%;
+    padding: 20px;
+    border: 0;
+    background: transparent;
+    color: var(--texto);
+    font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Code', Menlo, monospace;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    resize: vertical;
+    outline: none;
+
+    &::placeholder {
+      color: var(--texto-suave);
+      opacity: 0.7;
+    }
+  }
+}
+
+.editor__escrita--arrastando {
+  background: color-mix(in srgb, var(--preenchimento) 12%, transparent);
+
+  textarea {
+    // O contorno tracejado indica a área que aceita o arquivo.
+    outline: 2px dashed var(--preenchimento);
+    outline-offset: -12px;
+  }
+}
+
+.editor__aviso-de-arraste {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 20px;
+  text-align: center;
+  color: var(--acento);
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.editor__preview {
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 70vh;
+  background: var(--fundo);
+}
+
+.editor__rotulo {
+  margin-block-end: 14px;
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.editor__preview-vazio {
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+.editor__estado {
+  padding: 10px 16px;
+  border-top: 1px solid var(--borda);
+  color: var(--texto-suave);
+  font-size: 0.88rem;
+
+  &--erro {
+    color: color-mix(in srgb, #d93025 70%, var(--texto));
+  }
+}
+
+// Em tela estreita, escrita e preview empilham — lado a lado deixaria as duas
+// colunas estreitas demais para qualquer uma servir.
+@media (max-width: 900px) {
+  .editor__paineis {
+    grid-template-columns: 1fr;
+  }
+
+  .editor__escrita {
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--borda);
+  }
+
+  .editor__preview {
+    max-height: 40vh;
+  }
+}

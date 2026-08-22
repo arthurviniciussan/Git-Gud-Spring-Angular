@@ -69,7 +69,8 @@ class TokenServiceTest {
                 new com.arthur.gitgud.config.GitgudProperties.Jwt(
                         "outro-segredo-igualmente-longo-para-hs256", "gitgud-api", Duration.ofHours(2)),
                 Fixtures.propriedades().cors(),
-                Fixtures.propriedades().login());
+                Fixtures.propriedades().login(),
+                Fixtures.propriedades().uploads());
 
         String tokenDeOutraApp = new TokenService(outrasPropriedades, new RelogioDeTeste(Instant.now()))
                 .generateToken(Fixtures.admin("admin@gitgud.dev"));

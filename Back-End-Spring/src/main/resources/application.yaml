@@ -20,6 +20,13 @@ spring:
         jdbc:
           time_zone: UTC
 
+  servlet:
+    multipart:
+      # Um pouco acima do limite da aplicacao, de proposito: assim quem estoura
+      # recebe a nossa mensagem de erro em vez do erro cru do servidor.
+      max-file-size: 6MB
+      max-request-size: 6MB
+
   flyway:
     enabled: true
     locations: classpath:db/migration
@@ -46,6 +53,14 @@ gitgud:
   cors:
     # Origens do frontend, separadas por virgula.
     allowed-origins: ${GITGUD_CORS_ORIGINS:http://localhost:4200}
+
+  uploads:
+    # Pasta das imagens dos artigos. Em producao aponte para um volume, senao
+    # tudo se perde quando o container e recriado.
+    dir: ${GITGUD_UPLOADS_DIR:./dados/uploads}
+    max-size: ${GITGUD_UPLOADS_MAX_SIZE:5MB}
+    # Print de 4K nao precisa chegar inteiro no leitor.
+    max-width: ${GITGUD_UPLOADS_MAX_WIDTH:1600}
 
   login:
     # Defesa contra forca bruta na senha do admin.

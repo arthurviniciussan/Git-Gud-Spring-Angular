@@ -2,6 +2,7 @@ package com.arthur.gitgud.auth.security;
 
 import com.arthur.gitgud.common.exception.TooManyRequestsException;
 import com.arthur.gitgud.config.GitgudProperties;
+import com.arthur.gitgud.support.Fixtures;
 import com.arthur.gitgud.support.RelogioDeTeste;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -90,6 +91,7 @@ class LoginRateLimiterTest {
                 new GitgudProperties.Jwt("um-segredo-de-teste-com-mais-de-32-caracteres", "gitgud-api",
                         Duration.ofHours(2)),
                 new GitgudProperties.Cors(List.of("http://localhost:4200")),
-                new GitgudProperties.Login(maxTentativas, bloqueio));
+                new GitgudProperties.Login(maxTentativas, bloqueio),
+                Fixtures.propriedades().uploads());
     }
 }

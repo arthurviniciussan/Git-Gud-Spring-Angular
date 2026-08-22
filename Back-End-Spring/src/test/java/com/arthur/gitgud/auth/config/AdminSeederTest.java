@@ -98,6 +98,7 @@ class AdminSeederTest {
                 new GitgudProperties.Admin(email, nome, hash),
                 new GitgudProperties.Jwt(Fixtures.SEGREDO_JWT, "gitgud-api", Duration.ofHours(2)),
                 new GitgudProperties.Cors(List.of("http://localhost:4200")),
-                new GitgudProperties.Login(5, Duration.ofMinutes(15)));
+                new GitgudProperties.Login(5, Duration.ofMinutes(15)),
+                Fixtures.propriedades().uploads());
     }
 }

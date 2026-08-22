@@ -30,3 +30,39 @@ export type Pagina<T> = {
   totalPages: number;
   last: boolean;
 };
+
+/** Artigo como o painel precisa ver: com id, markdown e status. */
+export type ArtigoDoPainel = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  contentMarkdown: string;
+  coverImageUrl: string | null;
+  game: string | null;
+  score: number | null;
+  status: 'DRAFT' | 'PUBLISHED';
+  publishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  tags: Tag[];
+};
+
+/** Corpo de criação e edição. */
+export type EnvioDeArtigo = {
+  title: string;
+  summary: string;
+  contentMarkdown: string;
+  coverImageUrl: string | null;
+  game: string | null;
+  score: number | null;
+  tags: string[];
+};
+
+/** Resposta do upload de imagem. */
+export type ImagemEnviada = {
+  url: string;
+  largura: number;
+  altura: number;
+  bytes: number;
+};
